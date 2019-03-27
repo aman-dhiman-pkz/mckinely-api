@@ -1,5 +1,7 @@
 const route = require('../../lib/route');
 const validate = require('../../lib/validate');
+const Product = require('../../models/Product');
+const errors = require('../../errors');
 
 /**
  * @apiGroup Product
@@ -27,6 +29,13 @@ module.exports = route.post('/products', async (req, res) => {
         },
         required: ['productcategory', 'productsubcategory', 'productname', 'productcost', 'productsizes', 'image']
     });
-    
-    res.json({ 'body': { ...req.body } });
+
+    let product;
+    try {
+        product = await Product.create(req.body);
+    } catch (err) {
+        throw errors.SOMETHING_WENT_WRONG('Error in user creation')
+    }
+
+    res.json({ product });
 });

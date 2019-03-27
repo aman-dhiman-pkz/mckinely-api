@@ -1,4 +1,5 @@
 const route = require('../../lib/route');
+const Product = require('../../models/Product');
 
 /**
  * @apiGroup Product
@@ -8,5 +9,9 @@ const route = require('../../lib/route');
 
 module.exports = route.get('/products', async (req, res) => {
 
-    res.json({ 'msg': 'get ROute' });
+    // TODO : Add pagination in it
+
+    const products = await Product.find({}).lean();
+
+    res.json(products);
 });
